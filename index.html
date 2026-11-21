@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Электронные ценники для франшизы — обновление экранов с телефона</title>
+<style>
+  :root{
+    --bg:#0e0f13; --card:#171922; --card2:#1d2029; --gold:#d9a441; --gold2:#f0c678;
+    --text:#e9e6df; --muted:#9a97a0; --red:#e05a5a; --green:#57c98a; --line:#2a2d3a;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,Arial,sans-serif;line-height:1.6}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 20px}
+  header{padding:60px 0 40px;text-align:center;background:radial-gradient(ellipse at top,#1a1626 0%,var(--bg) 70%)}
+  .tag{display:inline-block;border:1px solid var(--gold);color:var(--gold2);border-radius:20px;padding:4px 16px;font-size:13px;letter-spacing:1px;margin-bottom:20px}
+  h1{font-size:34px;line-height:1.25;font-weight:700}
+  h1 span{color:var(--gold)}
+  .sub{color:var(--muted);font-size:17px;max-width:640px;margin:16px auto 0}
+  .badges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:26px}
+  .badge{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 14px;font-size:14px;color:var(--muted)}
+  .badge b{color:var(--text)}
+  h2{font-size:26px;text-align:center;margin:56px 0 8px}
+  .h2s{text-align:center;color:var(--muted);font-size:15px;margin-bottom:30px}
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:760px){.compare{grid-template-columns:1fr}h1{font-size:26px}}
+  .panel{border-radius:14px;padding:26px;border:1px solid var(--line);background:var(--card)}
+  .panel.old{border-color:#3a2430}
+  .panel.new{border-color:#25402f;background:linear-gradient(180deg,#152019,var(--card))}
+  .panel h3{font-size:18px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+  .old h3{color:var(--red)} .new h3{color:var(--green)}
+  .panel ul{list-style:none}
+  .panel li{padding:9px 0 9px 30px;position:relative;border-bottom:1px dashed var(--line);font-size:15px}
+  .panel li:last-child{border-bottom:none}
+  .old li::before{content:'✕';position:absolute;left:2px;color:var(--red)}
+  .new li::before{content:'✓';position:absolute;left:2px;color:var(--green)}
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:10px}
+  @media(max-width:760px){.steps{grid-template-columns:1fr}}
+  .step{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:22px;text-align:center}
+  .num{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#141414;font-weight:800;font-size:18px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
+  .step b{display:block;margin-bottom:6px;font-size:16px}
+  .step p{color:var(--muted);font-size:14px}
+  .pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:10px}
+  @media(max-width:760px){.pricing{grid-template-columns:1fr}}
+  .price-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px 22px;text-align:center;position:relative}
+  .price-card.hot{border-color:var(--gold);background:linear-gradient(180deg,#1d1a12,var(--card))}
+  .hot-tag{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--gold),var(--gold2));color:#141414;font-size:12px;font-weight:700;border-radius:12px;padding:3px 14px;white-space:nowrap}
+  .price-card .who{color:var(--muted);font-size:13px;text-transform:uppercase;letter-spacing:1px}
+  .price-card .val{font-size:30px;font-weight:800;margin:10px 0;color:var(--gold2)}
+  .price-card .val small{font-size:14px;color:var(--muted);font-weight:400}
+  .price-card p{color:var(--muted);font-size:14px}
+  .note{text-align:center;color:var(--muted);font-size:14px;margin-top:18px}
+  .note b{color:var(--gold2)}
+  .faq{max-width:760px;margin:0 auto}
+  .faq details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin-bottom:10px}
+  .faq summary{cursor:pointer;font-weight:600}
+  .faq p{color:var(--muted);font-size:15px;margin-top:10px}
+  .cta{text-align:center;margin:60px 0 80px;background:var(--card);border:1px solid var(--gold);border-radius:16px;padding:40px 24px}
+  .cta h2{margin:0 0 8px}
+  .cta p{color:var(--muted);margin-bottom:22px}
+  .btn{display:inline-block;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#141414;font-weight:800;font-size:17px;padding:14px 40px;border-radius:12px;text-decoration:none}
+  footer{text-align:center;color:var(--muted);font-size:13px;padding:26px;border-top:1px solid var(--line)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="tag">ДЛЯ ФРАНШИЗ И СЕТЕЙ</div>
+    <h1>Ценники на всех телевизорах обновляются <span>с телефона за 10 минут</span></h1>
+    <p class="sub">Заменяем флешки на умные плееры: одно обновление прайса — и все экраны во всех точках показывают актуальные цены. Без поездок, без снятия телевизоров со стены.</p>
+    <div class="badges">
+      <div class="badge">Подходит <b>любой ТВ с HDMI</b></div>
+      <div class="badge">Хватит <b>Wi-Fi точки</b></div>
+      <div class="badge">3–4 экрана на точку — <b>не проблема</b></div>
+      <div class="badge">Управление <b>с телефона</b></div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <h2>Как сейчас и как станет</h2>
+  <p class="h2s">Одинаковое железо, разный уровень жизни</p>
+  <div class="compare">
+    <div class="panel old">
+      <h3>Сейчас: флешки</h3>
+      <ul>
+        <li>Снять телевизор / дотянуться до порта</li>
+        <li>Перезаписать флешку на компьютере</li>
+        <li>Вернуться, вставить, найти нужный файл</li>
+        <li>Повторить × 3–4 экрана × каждая точка</li>
+        <li>Цена изменилась утром — экраны врут до вечера</li>
+        <li>Флешки теряются и ломаются</li>
+      </ul>
+    </div>
+    <div class="panel new">
+      <h3>Станет: умные экраны</h3>
+      <ul>
+        <li>Прислали новый прайс — файлом или фото</li>
+        <li>Загрузили в панель с телефона за минуту</li>
+        <li>Все телевизоры всех точек обновились сами</li>
+        <li>Каждому экрану — свой набор ценников</li>
+        <li>Акции включаются и выключаются по расписанию</li>
+        <li>История: что и когда показывалось</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>Как это работает</h2>
+  <p class="h2s">Три простых шага, дальше — само</p>
+  <div class="steps">
+    <div class="step"><div class="num">1</div><b>Плеер у телевизора</b><p>Маленькая коробочка размером с ладонь подключается к ТВ через HDMI и к Wi-Fi точки. Электричества копейки, работает 24/7.</p></div>
+    <div class="step"><div class="num">2</div><b>Общая панель</b><p>Все экраны всех точек видны в одной панели управления: что показывает каждый телевизор прямо сейчас, на любом экране — своя группа ценников.</p></div>
+    <div class="step"><div class="num">3</div><b>Обновление с телефона</b><p>Загружаете картинку или видео, выбираете точку и экраны — контент уезжает на плееры автоматически. Интернет нужен самый обычный.</p></div>
+  </div>
+
+  <h2>Стоимость</h2>
+  <p class="h2s">Прозрачно, без скрытых платежей</p>
+  <div class="pricing">
+    <div class="price-card">
+      <div class="who">Оборудование</div>
+      <div class="val">~2 500 ₽ <small>/ экран</small></div>
+      <p>Плеер для каждого телевизора. 3–4 экрана на точку = 7 500–10 000 ₽. Покупается один раз, служит годами.</p>
+    </div>
+    <div class="price-card">
+      <div class="who">Настройка точки</div>
+      <div class="val">12 000 ₽ <small>разово</small></div>
+      <p>Разворачиваем панель, подключаем все экраны точки, загружаем ваши ценники, обучаем персонал — 1 день.</p>
+    </div>
+    <div class="price-card hot">
+      <div class="hot-tag">ПИЛОТ: 8 000 ₽</div>
+      <div class="who">Обслуживание</div>
+      <div class="val">800 ₽ <small>/ точка / мес</small></div>
+      <p>Обновление ценников по вашему прайсу, помощь персоналу, контроль работы экранов. Оборудование под контролем.</p>
+    </div>
+  </div>
+  <p class="note">Первая точка — <b>пилот по себестоимости</b>: убедитесь, что это удобно, до масштабирования на всю сеть.</p>
+
+  <div class="faq">
+    <h2 style="text-align:left">Частые вопросы</h2>
+    <p class="h2s" style="text-align:left;margin-bottom:20px"></p>
+    <details><summary>Наши телевизоры старые, подойдут?</summary><p>Подойдёт любой телевизор или монитор с HDMI-входом. Возраст и «умность» не важны — мозгом становится плеер.</p></details>
+    <details><summary>Что если Wi-Fi пропадёт?</summary><p>Плеер хранит текущий контент локально: экран продолжит показывать последний загруженный прайс, пока сеть не вернётся. Телевизоры не гаснут.</p></details>
+    <details><summary>Кто будет делать картинки ценников?</summary><p>Мы. Присылаете прайс файлом или даже фото — готовые макеты ценников загружаются на экраны. Входит в обслуживание.</p></details>
+    <details><summary>Можно ли показывать видео и акции?</summary><p>Да: видео, анимация, бегущие строки, автоматическое включение акций по датам (например, «Скидки выходного дня»).</p></details>
+    <details><summary>А если точек станет больше?</summary><p>Новая точка добавляется в панель за один визит: плееры подключаются, ценники приезжают автоматически из вашего шаблона.</p></details>
+  </div>
+
+  <div class="cta">
+    <h2>Запустить пилот на одной точке</h2>
+    <p>Покажем на живых экранах, как это работает. Без обязательств — если не зайдёт, плееры останутся вам как обычные медиаплееры.</p>
+    <a class="btn" href="https://t.me/mira_sunside">Написать в Telegram</a>
+  </div>
+</div>
+
+<footer>Электронные ценники для франшиз · Настройка и обслуживание · marsel-studio</footer>
+
+</body>
+</html>
